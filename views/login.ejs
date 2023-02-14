@@ -1,0 +1,48 @@
+<%- include('includes/header') %>
+<%- include('includes/nav-main') %>
+<div class="content-wrap">
+    <h1>Login</h1>
+    <form action="loginsubmit" method="POST" enctype="multipart/form-data">
+       <div>
+            <div class="row">
+                <div class="col-25">
+                    <label>Username </label>
+                </div>
+                <div class="col-75">
+                    <input id="username" class="txtinput" placeholder="username" type="text" name="username"><br/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-25">
+                    <label>Password</label>
+                </div>
+                <div class="col-75">
+                    <input id="password" class="txtinput" placeholder="password" type="password" name="password"><br/>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25">
+                <label></label>
+            </div>
+            <div class="col-75">
+                <div>
+                    <% 
+                        if(typeof(error) != 'undefined'){
+                            %>
+                           <div class="error"> <%= error%> </p>
+                            <%
+                    } %>
+                        
+                </div>
+                <br/>
+               
+                <input type="submit" value="Submit" class="login">
+               
+            </div>
+        </div>
+        
+    </form>
+</div>
+<%- include('includes/footer') %>
+            

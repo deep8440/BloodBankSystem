@@ -1,0 +1,64 @@
+<%- include('includes/header') %>
+<%- include('includes/nav-main') %>
+<div class="content-wrap">
+    <h1>Sign Up</h1>
+    <form action="bloodbankSignup" method="POST" enctype="multipart/form-data">
+       <div>
+            <div class="row">
+                <div class="col-25">
+                    <label>Name </label>
+                </div>
+                <div class="col-75">
+                    <input id="name" class="txtinput" placeholder="name" type="text" name="name"><br/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-25">
+                    <label>Email</label>
+                </div>
+                <div class="col-75">
+                    <input id="email" class="txtinput" placeholder="email" type="text" name="email"><br/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-25">
+                    <label>Password</label>
+                </div>
+                <div class="col-75">
+                    <input id="password" class="txtinput" placeholder="password" type="password" name="password"><br/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-25">
+                    <label>Confirm Password</label>
+                </div>
+                <div class="col-75">
+                    <input id="confirmpassword" class="txtinput" placeholder="confirm password" type="password" name="confirmpassword"><br/>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25">
+                <label></label>
+            </div>
+            <div class="col-75">
+                <div>
+                    <% 
+                        if(typeof(error) != 'undefined'){
+                            %>
+                           <div class="error"> <%= error%> </p>
+                            <%
+                    } %>
+                        
+                </div>
+                <br/>
+               
+                <input type="submit" value="Submit" class="login">
+               
+            </div>
+        </div>
+        
+    </form>
+</div>
+<%- include('includes/footer') %>
+            

@@ -1,0 +1,30 @@
+<%- include('includes/header') %>
+<%- include('includes/nav-main') %>
+<div class="content-wrap">
+    <h1>Receipt</h1>
+    <table class="customers">
+        <tr>
+            <th>Name</th>
+            <th>phone</th>
+            <th>Mouse</th> 
+            <th>Pencil</th>
+            <th>Lamp</th>
+            <th>SubTotal</th> 
+            <th>Tax</th> 
+            <th>Total</th> 
+        </tr>
+        <tr>
+            <td><%= name %></td>
+            <td><%= phone %></td>
+            <td><%= mouseprice %> * <%= mouseqty %></td>
+            <td><%= pencilprice %> * <%= pencilqty %></td>
+            <td><%= lampprice %> * <%= lampqty %></td>
+            <td><%= subTotal %></td>
+            <td><%= taxTotal %></td>
+            <td><%= total %></td>
+        </tr>
+       
+    </table>
+</div>
+<%- include('includes/footer') %>
+            

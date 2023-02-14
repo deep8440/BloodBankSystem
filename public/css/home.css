@@ -1,0 +1,118 @@
+body{
+    font-family: 'Kalam';
+}
+
+.title{
+    font-size: 30px;
+    text-align: center;
+}
+
+.product{
+    font-size: 15px;
+    font-weight: bold;
+    border: none;
+    text-align: center;
+}
+ 
+.ordercontainer {
+    display: flex;
+    justify-content: center;
+  }  
+ 
+
+ .card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    max-width: 300px;
+    margin: auto;
+    text-align: center;
+    font-family: arial;
+    width: 30%;
+    float: left;
+    padding: 20px;
+    margin-top: 20px;
+  }
+  
+  .price {
+    color: grey;
+    font-size: 18px;
+    text-align: center;
+    border: none;
+  }
+
+
+  input{
+    padding: 5px;
+  }
+  
+  .button {
+    border: none;
+    outline: 0;
+    padding: 12px;
+    color: white;
+    background-color: #000;
+    text-align: center;
+    cursor: pointer;
+    width: 20%;
+    font-size: 18px;
+    align-content: center;
+  }
+  
+  .button:hover {
+    opacity: 0.7;
+  }
+
+  .submit{
+    display: flex;
+    margin-top: 20px;
+    margin-left: 50px;
+  }
+
+  .txtinput, select {
+    width: 90%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+  }
+  
+  label {
+    padding: 12px 12px 12px 0;
+    display: inline-block;
+  }
+  
+
+  .formData{
+    margin-left: 50px;
+  }
+  
+  .col-25 {
+    float: left;
+    width: 10%;
+    margin-top: 6px;
+    margin-left: 50px;
+  }
+  
+  .col-75 {
+    float: left;
+    width: 30%;
+    margin-top: 6px;
+  }
+  
+  /* Clear floats after the columns */
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+
+  #formResult{
+    color: red;
+  }
+  
+  /* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
+  @media screen and (max-width: 600px) {
+    .col-25, .col-75, input[type=submit] {
+      width: 100%;
+      margin-top: 0;
+    }
+  }
