@@ -1,0 +1,93 @@
+<%- include('includes/header') %>
+<%- include('includes/nav-dashboard') %>
+<div class="content-wrap">
+	<main>
+      <h1>Profile</h1>
+      <form action="profileSubmit" method="POST" enctype="multipart/form-data">
+      
+      <div class="container">
+        <div class="row">
+            <div class="col-25">
+                <label>Name</label>
+            </div>
+            <div class="col-75">
+                <input id="name" value="<%= userData.name %>" class="txtinput" placeholder="First Last" type="text" name="name"><br/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25">
+                <label>Address Line1</label>
+            </div>
+            <div class="col-75">
+                <input id="addressline1" value="<%= userData.address1 %>" class="txtinput" placeholder="Address Line 1" type="text" name="addressline1"><br/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25">
+                <label>Address Line2</label>
+            </div>
+            <div class="col-75">
+                <input id="addressline2" value="<%= userData.address2 %>" class="txtinput" placeholder="Address Line 2" type="text" name="addressline2"><br/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25">
+                <label>City</label>
+            </div>
+            <div class="col-75">
+                <input id="city" value="<%= userData.city %>" class="txtinput" placeholder="City" type="text" name="city"><br/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25">
+                <label>Province</label>
+            </div>
+            <div class="col-75">
+                <input id="province" value="<%= userData.province %>" class="txtinput" placeholder="Province" type="text" name="province"><br/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25">
+                <label>Postal Code</label>
+            </div>
+            <div class="col-75">
+                <input id="postalCode" value="<%= userData.postalCode %>" class="txtinput" placeholder="Postal Code" type="text" name="postalCode"><br/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25">
+                <label>PhoneNumber</label>
+            </div>
+            <div class="col-75">
+                <input id="phoneNumber" value="<%= userData.phoneNumber %>" class="txtinput" placeholder="Phone Number" type="text" name="phoneNumber"><br/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25">
+                <label>Opening Hour</label>
+            </div>
+            <div class="col-75">
+                <input id="openingHour" value="<%= userData.openingHour %>" class="txtinput" placeholder="Opening Hour" type="text" name="openingHour"><br/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25">
+                <label>Closing Hour</label>
+            </div>
+            <div class="col-75">
+                <input id="Closing Hour" value="<%= userData.closingHour %>" class="txtinput" placeholder="Closing Hour" type="text" name="closingHour"><br/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25">
+            </div>
+            <div class="col-75">
+                <input type="submit" value="Submit" class="login">
+            </div>
+            
+        </div>
+      <div>
+      </form>
+	</main>
+</div>
+<%- include('includes/footer') %>

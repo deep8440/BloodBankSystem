@@ -227,6 +227,8 @@ myApp.get('/bloodbankhome',function(req, res){
     }
 });
 
+
+
 // render delete page
 myApp.get('/delete/:id',function(req, res){
     if(req.session.loggedId){
@@ -289,7 +291,15 @@ myApp.post('/bloodbankSignup',[
                 name : name,
                 email : email,
                 password : password,
-                confirmpassword : confirmpassword
+                confirmpassword : confirmpassword,
+                address1 : null,
+                address2 : null,
+                city : null,
+                province : null,
+                postalCode : null,
+                phoneNumber : null,
+                openingHour : null,
+                closingHour : null,
             }
         
             var bloodBank = new BloodBank(pageData); 
@@ -298,6 +308,65 @@ myApp.post('/bloodbankSignup',[
             res.render('login');
         }
        
+    });
+
+    
+});
+
+myApp.get('/profile',function(req, res){
+    if(req.session.loggedId){
+        BloodBank.findOne({email: req.session.username}).exec(function(err, bloodbank){ 
+            var userData = {
+                name: bloodbank.name,
+                address1 : bloodbank.address1,
+                address2 : bloodbank.address2,
+                city : bloodbank.city,
+                province : bloodbank.province,
+                postalCode : bloodbank.postalCode,
+                phoneNumber : bloodbank.phoneNumber,
+                openingHour : bloodbank.openingHour,
+                closingHour : bloodbank.closingHour
+            };
+    
+            var pageData = {
+                userData: userData
+            }
+            res.render('profile', pageData);
+        });
+    }
+    else{
+        res.redirect('/login');
+    }
+});
+
+myApp.post('/profileSubmit',[
+],function(req, res){
+
+    //fetch all the form fields
+    var name =  req.body.name;
+    var address1 =  req.body.addressline1;
+    var address2 =  req.body.addressline2;
+    var city =  req.body.city;
+    var province =  req.body.province;
+    var postalCode =  req.body.postalCode;
+    var phoneNumber =  req.body.phoneNumber;
+    var openingHour =  req.body.openingHour;
+    var closingHour =  req.body.closingHour;
+    console.log(address1);
+    //find in database if it exits
+    BloodBank.findOne({email: req.session.username}).exec(function(err, bloodbank){
+    
+        bloodbank.name=name,
+        bloodbank.address1 =address1,
+        bloodbank.address2 =address2,
+        bloodbank.city =city,
+        bloodbank.province =province,
+        bloodbank.postalCode =postalCode,
+        bloodbank.phoneNumber =phoneNumber,
+        bloodbank.openingHour =openingHour,
+        bloodbank.closingHour =closingHour
+        bloodbank.save();
+        res.redirect('/bloodbankhome');
     });
 
     
