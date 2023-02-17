@@ -1,62 +1,57 @@
 <%- include('includes/header') %>
-<%- include('includes/nav-main') %>
+
 <div class="content-wrap">
-    <h1>Sign Up</h1>
+    <h1 class="text-center">Sign Up</h1>
+    <div class="login-container">
     <form action="bloodbankSignup" method="POST" enctype="multipart/form-data">
        <div>
             <div class="row">
-                <div class="col-25">
+                <div class="col-4">
                     <label>Name </label>
                 </div>
-                <div class="col-75">
+                <div class="col-8">
                     <input id="name" class="txtinput" placeholder="name" type="text" name="name"><br/>
                 </div>
             </div>
             <div class="row">
-                <div class="col-25">
+                <div class="col-4">
                     <label>Email</label>
                 </div>
-                <div class="col-75">
+                <div class="col-8">
                     <input id="email" class="txtinput" placeholder="email" type="text" name="email"><br/>
                 </div>
             </div>
             <div class="row">
-                <div class="col-25">
+                <div class="col-4">
                     <label>Password</label>
                 </div>
-                <div class="col-75">
+                <div class="col-8">
                     <input id="password" class="txtinput" placeholder="password" type="password" name="password"><br/>
                 </div>
             </div>
             <div class="row">
-                <div class="col-25">
+                <div class="col-4">
                     <label>Confirm Password</label>
                 </div>
-                <div class="col-75">
+                <div class="col-8">
                     <input id="confirmpassword" class="txtinput" placeholder="confirm password" type="password" name="confirmpassword"><br/>
                 </div>
             </div>
         </div>
         <div class="row">
-            <div class="col-25">
-                <label></label>
+                    <div class="col-2">
+                       
+                    </div>
+                    <div class="col-10">
+                       <a href="#" class="text-right d-block">Already have an account? Sign In</a>
+                    </div>
             </div>
-            <div class="col-75">
-                <div>
-                    <% 
-                        if(typeof(error) != 'undefined'){
-                            %>
-                           <div class="error"> <%= error%> </p>
-                            <%
-                    } %>
-                        
+            <div class="row">
+                <div class="col-12 text-center">
+                    <input type="submit" value="Sign Up" class="login">
+                   
                 </div>
-                <br/>
-               
-                <input type="submit" value="Submit" class="login">
-               
             </div>
-        </div>
         
     </form>
 </div>
