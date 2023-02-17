@@ -9,6 +9,11 @@
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
 }
+.titleLogo {
+     height: 100px;
+     object-fit: contain;
+}
+
 .container {
     margin: 0 auto;
     text-align: center;
@@ -214,7 +219,11 @@ text-align: center;
 .col-1 {width: 8.33%;}
 .col-2 {width: 16.66%;}
 .col-3 {width: 25%;}
-.col-4 {width: 33.33%;}
+.col-4 {
+  width: 80%;
+  display: flex;
+  align-content: space-around;
+  align-items: center;}
 .col-5 {width: 41.66%;}
 .col-6 {width: 50%;}
 .col-7 {width: 58.33%;}
