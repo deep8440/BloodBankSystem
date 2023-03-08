@@ -1,0 +1,57 @@
+<%- include('includes/header') %>
+
+<div class="content-wrap">
+    <h1 class="text-center">Select Dates</h1>
+    <div class="login-container">
+        <form action="selectdates" method="POST" enctype="multipart/form-data">
+           <div>
+            <div class="row">
+                <%= bloodbankData.name %> <br>
+                <%= bloodbankData.address1 %><%= bloodbankData.address2 %>
+                <%= bloodbankData.city %><%= bloodbankData.province %>
+                <%= bloodbankData.postalCode %>
+            </div>
+                <div class="row">
+                    <div class="col-4">
+                        <label>Select dates </label>
+                    </div>
+                    <div class="col-8">
+                        <input id="date" class="txtinput" placeholder="Select date" type="datetime-local" name="date">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 text-center">
+                    <div>
+                        <% 
+                            if(typeof(error) != 'undefined'){
+                                %>
+                               <div class="error"> <%= error%> </p>
+                                <%
+                        } %>
+                            
+                    </div>
+                    <br/>
+                    <input type="submit" value="Submit" class="login">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function(){
+        var dtToday = new Date();
+     
+        var month = dtToday.getMonth() + 1;
+        var day = dtToday.getDate();
+        var year = dtToday.getFullYear();
+        if(month < 10)
+            month = '0' + month.toString();
+        if(day < 10)
+         day = '0' + day.toString();
+        var maxDate = year + '-' + month + '-' + day;
+        $('#date').attr('min', maxDate);
+    });
+</script>
+<%- include('includes/footer') %>
+            

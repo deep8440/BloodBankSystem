@@ -13,12 +13,6 @@ const session = require('express-session'); // session
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost:27017/bloodbanksystem');
 
-// create a model for admin user    
-const AdminUser = mongoose.model('AdminUser', {
-    username: String,
-    password: String
-});
-
 const BloodBank = mongoose.model('BloodBank', {
     name: String,
     address1 : String,
@@ -31,6 +25,21 @@ const BloodBank = mongoose.model('BloodBank', {
     openingHour : String,
     closingHour : String,
     password : String
+});
+
+const Appointment = mongoose.model('Appointment', {
+    userid: String,
+    bloodbankid : String,
+    
+});
+
+const User = mongoose.model('User', {
+    name: String,
+    dateOfBirth : String,
+    gender:String,
+    email : String,
+    phoneNumber : String,
+    
 });
 
 // set up variables to use packages
@@ -167,23 +176,20 @@ myApp.post('/checkout', [
 });
 
 
-// default application stuff 
-myApp.get('/setup',function(req, res){
-    var pageData = {
-        username : 'admin',
-        password : 'admin@123'
-    }
-
-    var adminUser = new AdminUser(pageData); 
-    adminUser.save();
-});
-
 // render login page
 myApp.get('/login',function(req, res){
     var pageData = {
         error : ''
     }
     res.render('login', pageData); 
+});
+
+// render login page
+myApp.get('/loginUser',function(req, res){
+    var pageData = {
+        error : ''
+    }
+    res.render('loginUser', pageData); 
 });
 
 // login submit page
@@ -210,6 +216,37 @@ myApp.post('/loginsubmit',[
                 error : 'login credentials are not correct.'
             }
             res.render('login', pageData);
+        }
+       
+    });
+
+    
+});
+
+// login submit user page
+myApp.post('/loginsubmituser',[
+    check('username', 'Please enter username.').not().isEmpty(),
+    check('password', 'Please enter password.').not().isEmpty()
+],function(req, res){
+
+    //fetch all the form fields
+    var email = req.body.username;
+    var password = req.body.password;
+
+    //find in database if it exits
+    User.findOne({email: email, password: password}).exec(function(err, adminuser){
+    
+        if(adminuser){ // would be true if user is found in admin user
+            // save in session
+            req.session.username_user = adminuser.email;
+            req.session.loggedId_user = true;
+            res.redirect('/userhome');
+        }
+        else{
+            var pageData = {
+                error : 'login credentials are not correct.'
+            }
+            res.render('loginUser', pageData);
         }
        
     });
@@ -267,6 +304,14 @@ myApp.get('/signupbloodbank',function(req, res){
     res.render('signupbloodbank', pageData); 
 });
 
+myApp.get('/signupUser',function(req, res){
+    var pageData = {
+        error : ''
+    }
+    res.render('signupUser', pageData); 
+});
+
+
 
 myApp.post('/bloodbankSignup',[
 ],function(req, res){
@@ -322,7 +367,7 @@ myApp.get('/profile',function(req, res){
                 address2 : bloodbank.address2,
                 city : bloodbank.city,
                 province : bloodbank.province,
-                postalCode : bloodbank.postalCode,
+                postalCode : bloodbank.postalCode.toLowerCase(),
                 phoneNumber : bloodbank.phoneNumber,
                 openingHour : bloodbank.openingHour,
                 closingHour : bloodbank.closingHour
@@ -368,8 +413,84 @@ myApp.post('/profileSubmit',[
         bloodbank.save();
         res.redirect('/bloodbankhome');
     });
+});
 
+
+myApp.post('/userSignup',[
+],function(req, res){
+
+    //fetch all the form fields
+    var name = req.body.name;
+    var email = req.body.email;
+    var password = req.body.password;
+    var confirmpassword = req.body.confirmpassword;
+
+    //find in database if it exits
+    User.findOne({email: email}).exec(function(err, user){
     
+        if(user){ 
+            var pageData = {
+                error : 'User with same email already exists.'
+            }
+        }
+        else{
+            var pageData = {
+                name : name,
+                email : email,
+                password : password,
+                confirmpassword : confirmpassword
+            }
+        
+            var user = new U
+            ser(pageData); 
+            user.save();
+
+            res.render('loginUser');
+        }
+       
+    });
+});
+
+// render view orders page
+myApp.get('/appointment',function(req, res){
+    res.render('appointment'); 
+});
+
+// login submit user page
+myApp.post('/postalcodesearch',[],function(req, res){
+    //fetch all the form fields
+    var postalcode = req.body.postalcode;
+    //find in database if it exits
+    BloodBank.find({postalCode: postalcode.toLowerCase()}).exec(function(err, bloodbanks){
+        if(bloodbanks){ // would be true if bloodbank is found 
+            res.render('selectbloodbank', {bloodbanks: bloodbanks});
+        }
+        else{
+            var pageData = {
+                error : 'Blood bank is not available in near by area.'
+            }
+            res.render('appointment', pageData);
+        }
+       
+    });
+});
+
+myApp.get('/select/:id',function(req, res){
+    
+    var id = req.params.id;
+
+    var bloodBankData = {
+        bloodbankid : id
+    };
+
+    BloodBank.findOne({_id: id}).exec(function(err, bloodbank){
+        if(bloodbank){ // would be true if bloodbank is found 
+           console.log(bloodbank);
+           res.render('selectdates', {bloodbankData: bloodbank});
+        }
+        
+    });
+
 });
 
 // start the server and listen at a port

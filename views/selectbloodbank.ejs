@@ -1,0 +1,29 @@
+<%- include('includes/header') %>
+<%- include('includes/nav-dashboard') %>
+<div class="content-wrap">
+	<main>
+      <table class="customers">
+        <tr>
+            <th>Name</th>
+            <th>Address</th>
+            <th></th>
+        </tr>
+        <%
+        for(bloodbank of bloodbanks)
+        {
+        %>
+            <tr>
+                <td><%= bloodbank.name %></td>
+                <td><%= bloodbank.address1 %> <%= bloodbank.city %>
+                    <%= bloodbank.province %> <%= bloodbank.postalCode %> 
+                </td>
+                <td><a href="/select/<%= bloodbank._id %>">Select</a></td>
+            </tr>
+        <%
+        }       
+        %>
+      </table>
+	</main>
+</div>
+<%- include('includes/footer') %>
+            
