@@ -29,7 +29,16 @@ const BloodBank = mongoose.model('BloodBank', {
 
 const Appointment = mongoose.model('Appointment', {
     userid: String,
+    username: String,
+    useremail: String,
     bloodbankid : String,
+    bloodbankname: String,
+    bloodbankaddress1 : String,
+    bloodbankcity : String,
+    bloodbankprovince : String,
+    bloodbankpostalCode : String,
+    bloodbankemail : String,
+    bloodbankpnone: String,
     bookingdate : String,
     status: String
 });
@@ -131,9 +140,10 @@ myApp.post('/loginsubmituser',[
         if(adminuser){ // would be true if user is found in admin user
             // save in session
             req.session.userid = adminuser._id;
-            req.session.username_user = adminuser.email;
+            req.session.useremail_user = adminuser.email;
+            req.session.username_user = adminuser.name;
             req.session.loggedId_user = true;
-            res.render('userhome');
+            res.render('appointment');
         }
         else{
             var pageData = {
@@ -395,24 +405,44 @@ myApp.get('/select/:id',function(req, res){
     });
 });
 
-myApp.post('/bookappointment',[
-],function(req, res){
+myApp.post('/select/bookappointment',[],function(req, res){
 
+    console.log(123);
     // if(req.session.loggedId_user){
 
     //fetch all the form fields
     var id = req.body.bloodbankid;
     var bookingdate = req.body.date;
     var userid = req.session.userid;
+    var bloodbankName= req.body.bloodbankname;
+    var bloodbankaddress1= req.body.bloodbankaddress1;
+    var bloodbankcity= req.body.bloodbankcity;
+    var bloodbankprovince= req.body.bloodbankprovince;
+    var bloodbankpostalCode= req.body.bloodbankpostalcode;
+    var bloodbankemail= req.body.bloodbankemail;
+    var bloodbankpnone= req.body.bloodbankphonenumber;
+    var username = req.session.username_user;
+    var useremail = req.session.useremail_user;
 
     //find in database if it exits
             var pageData = {
                 userid: userid,
+                username: username,
+                useremail: useremail,
                 bloodbankid : id,
+                bloodbankname: bloodbankName,
+                bloodbankaddress1 : bloodbankaddress1,
+                bloodbankcity : bloodbankcity,
+                bloodbankprovince : bloodbankprovince,
+                bloodbankpostalCode : bloodbankpostalCode,
+                bloodbankemail : bloodbankemail,
+                bloodbankpnone: bloodbankpnone,
                 bookingdate : bookingdate,
                 status: "Confirmed"
             }
         
+            console.log(pageData);
+
             var user = new Appointment(pageData); 
             user.save();
 
