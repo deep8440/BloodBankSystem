@@ -30,7 +30,8 @@ const BloodBank = mongoose.model('BloodBank', {
 const Appointment = mongoose.model('Appointment', {
     userid: String,
     bloodbankid : String,
-    
+    bookingdate : String,
+    status: String
 });
 
 const User = mongoose.model('User', {
@@ -65,116 +66,6 @@ myApp.set('view engine', 'ejs');
 myApp.get('/',function(req, res){
     res.render('login'); 
 });
-
-myApp.post('/checkout', [
-    check('name', 'Please enter name').notEmpty(),
-    check('phone', 'Phone number not in correct format it must be in xxx-xxx-xxxx').matches(/^[\d]{3}-[\d]{3}-[\d]{4}$/),
-    ], function(req,res){
-    console.log(req.body);
-
-    //fetch data
-    var mouse = req.body.mouse;
-    var mouseprice = req.body.mouseprice.slice(1);
-    var mouseqty = req.body.mouseqty;
-    var pencil = req.body.pencil;
-    var pencilprice = req.body.pencilprice.slice(1);
-    var pencilqty = req.body.pencilqty;
-    var lamp = req.body.lamp;
-    var lampprice = req.body.lampprice.slice(1);
-    var lampqty = req.body.lampqty;
-
-    var name = req.body.name;
-    var phone = req.body.phone;
-   
-
-    // check qauntity
-    if(mouseqty == 0 && pencilqty == 0 && lampqty == 0){
-        var errorData = [{
-            msg : 'Please enter quantity for checkout'
-        }];
-        var userData = {
-            name: name,
-            phone : phone,
-            mouseqty : mouseqty,
-            pencilqty : pencilqty,
-            lampqty : lampqty
-        };
-        var pageData = {
-            errors: errorData,
-            userData: userData
-        }
-        //console.log(errorData);
-        res.render('home', pageData);
-    }
-    else{
-        const errors = validationResult(req);
-        if(!errors.isEmpty()){ // if there are errors
-
-            var errorData = errors.array();
-            var userData = {
-                name: name,
-                phone : phone,
-                mouseqty : mouseqty,
-                pencilqty : pencilqty,
-                lampqty : lampqty
-            }
-            var pageData = {
-                errors: errorData,
-                userData: userData
-            }
-            //console.log(errorData);
-            res.render('home', pageData);
-        }
-        else{
-            var tax = 0.13;
-
-            var subTotal = 0;
-
-            // calculate sub total
-            if(mouseqty != 0){
-                subTotal += parseInt(mouseprice) * mouseqty;
-            }
-
-            if(pencilqty != 0){
-                subTotal += parseInt(pencilprice) * pencilqty;
-            }
-            if(lampqty != 0){
-                subTotal += parseInt(lampprice) * lampqty;
-            }
-
-            // calculate total tax
-            var taxTotal = subTotal * tax;
-
-            // calculate total
-            var total =  subTotal + taxTotal;
-
-            // create object to generate receipt
-            var userData = {
-                name: name,
-                phone : phone,
-                mouse : mouse,
-                pencil : pencil,
-                lamp : lamp,
-                mouseqty : mouseqty,
-                pencilqty : pencilqty,
-                lampqty : lampqty,
-                mouseprice : mouseprice,
-                pencilprice : pencilprice,
-                lampprice : lampprice,
-                subTotal : subTotal.toFixed(2),
-                taxTotal: taxTotal.toFixed(2),
-                total: total.toFixed(2)
-            }
-
-            // save order details in database
-            var newOrder = new Order(userData); 
-            newOrder.save();
-
-            res.render('orderreceipt', userData);
-        }
-    }
-});
-
 
 // render login page
 myApp.get('/login',function(req, res){
@@ -238,6 +129,7 @@ myApp.post('/loginsubmituser',[
     
         if(adminuser){ // would be true if user is found in admin user
             // save in session
+            req.session.userid = adminuser._id;
             req.session.username_user = adminuser.email;
             req.session.loggedId_user = true;
             res.redirect('/userhome');
@@ -367,7 +259,7 @@ myApp.get('/profile',function(req, res){
                 address2 : bloodbank.address2,
                 city : bloodbank.city,
                 province : bloodbank.province,
-                postalCode : bloodbank.postalCode.toLowerCase(),
+                postalCode : bloodbank.postalCode,
                 phoneNumber : bloodbank.phoneNumber,
                 openingHour : bloodbank.openingHour,
                 closingHour : bloodbank.closingHour
@@ -393,7 +285,7 @@ myApp.post('/profileSubmit',[
     var address2 =  req.body.addressline2;
     var city =  req.body.city;
     var province =  req.body.province;
-    var postalCode =  req.body.postalCode;
+    var postalCode =  req.body.postalCode.toLowerCase();
     var phoneNumber =  req.body.phoneNumber;
     var openingHour =  req.body.openingHour;
     var closingHour =  req.body.closingHour;
@@ -441,8 +333,7 @@ myApp.post('/userSignup',[
                 confirmpassword : confirmpassword
             }
         
-            var user = new U
-            ser(pageData); 
+            var user = new User(pageData); 
             user.save();
 
             res.render('loginUser');
@@ -487,11 +378,40 @@ myApp.get('/select/:id',function(req, res){
         if(bloodbank){ // would be true if bloodbank is found 
            console.log(bloodbank);
            res.render('selectdates', {bloodbankData: bloodbank});
-        }
+        }      
+    });
+});
+
+myApp.post('/bookappointment',[
+],function(req, res){
+
+    // if(req.session.loggedId_user){
+
+    //fetch all the form fields
+    var id = req.body.bloodbankid;
+    var bookingdate = req.body.date;
+    var userid = req.session.userid;
+
+    //find in database if it exits
+            var pageData = {
+                userid: userid,
+                bloodbankid : id,
+                bookingdate : bookingdate,
+                status: "Confirmed"
+            }
         
+            var user = new Appointment(pageData); 
+            user.save();
+
+            res.render('userhome');
+        
+        // }
+        // else{
+        //     res.render('loginUser');
+        // }
     });
 
-});
+
 
 // start the server and listen at a port
 myApp.listen(8080);
