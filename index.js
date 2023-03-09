@@ -11,7 +11,7 @@ const fileUpload = require('express-fileupload'); // for file upload
 const session = require('express-session'); // session
 
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/bloodbanksystem');
+mongoose.connect('mongodb://127.0.0.1:27017/bloodbanksystem');
 
 const BloodBank = mongoose.model('BloodBank', {
     name: String,
@@ -39,6 +39,7 @@ const User = mongoose.model('User', {
     gender:String,
     email : String,
     phoneNumber : String,
+    password: String,
     
 });
 
@@ -240,7 +241,7 @@ myApp.post('/loginsubmituser',[
             // save in session
             req.session.username_user = adminuser.email;
             req.session.loggedId_user = true;
-            res.redirect('/userhome');
+            res.render('userhome');
         }
         else{
             var pageData = {
@@ -426,24 +427,35 @@ myApp.post('/userSignup',[
     var confirmpassword = req.body.confirmpassword;
 
     //find in database if it exits
-    User.findOne({email: email}).exec(function(err, user){
+    User.findOne({email: email}).exec(function(err, user)
+    {
     
-        if(user){ 
+        if(user)
+        { 
             var pageData = {
                 error : 'User with same email already exists.'
             }
         }
+        /*else if(password != confirmpassword)
+        {
+            var pageData = {
+                error : 'Password and confirm password not matching.'
+            }
+        }*/
         else{
             var pageData = {
                 name : name,
+                dateOfBirth :'',
+                gender:'',
                 email : email,
-                password : password,
-                confirmpassword : confirmpassword
+                phoneNumber :'',
+                password : password
+                
             }
-        
-            var user = new U
-            ser(pageData); 
+           
+            var user = new User(pageData); 
             user.save();
+            
 
             res.render('loginUser');
         }
@@ -494,9 +506,9 @@ myApp.get('/select/:id',function(req, res){
 });
 
 // start the server and listen at a port
-myApp.listen(8080);
+myApp.listen(8081);
 
 //tell everything was ok
-console.log('Browse website on localhost at port 8080....');
+console.log('Browse website on localhost at port 8081....');
 
 
