@@ -9,7 +9,33 @@
 <div class="content-wrap">
 	<main>
     <h1>Appointments:</h1>
-      
+    <table class="customers">
+      <tr>
+          <th>Name</th>
+          <th>Address</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>Appointment date and time</th>
+          
+      </tr>
+      <%
+      for(bloodbank of appointments)
+      {
+      %>
+          <tr>
+              <td><%= bloodbank.username %></td>
+              <td><%= bloodbank.bloodbankaddress1 %> <%= bloodbank.bloodbankcity %>
+                  <%= bloodbank.bloodbankprovince %> <%= bloodbank.bloodbankpostalCode %> 
+              </td>
+              <td><%= bloodbank.bloodbankemail %></td>
+              <td><%= bloodbank.bloodbankpnone %></td>
+              <td><%= bloodbank.bookingdate %></td>
+              
+          </tr>
+      <%
+      }       
+      %>
+    </table>
 	</main>
 </div>
 <%- include('includes/footer') %>
