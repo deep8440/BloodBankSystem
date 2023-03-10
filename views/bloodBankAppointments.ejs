@@ -1,0 +1,40 @@
+<%- include('includes/header') %>
+<nav>
+	<ul class="nav d-flex">
+	  <li><a href="/bloodbankhome">Home</a></li>
+	  <li><a href="/profile">Profile</a></li>
+	  <li><a href="/bloodBankAppointments">Appointments</a></li>
+	  <li><a href="/logout">Logout</a></li>
+	</ul>
+  </nav> 
+<div class="content-wrap">
+	<main>
+    <h1>Appointments:</h1>
+    <table class="customers">
+      <tr>
+          <th>User Name</th>
+          
+          <th>User Email</th>
+          
+          <th>Appointment date and time</th>
+          
+      </tr>
+      <%
+      for(bloodbank of appointments)
+      {
+      %>
+          <tr>
+              <td><%= bloodbank.username %></td>
+              
+              <td><%= bloodbank.useremail %></td>
+              
+              <td><%= bloodbank.bookingdate %></td>
+              
+          </tr>
+      <%
+      }       
+      %>
+    </table>
+	</main>
+</div>
+<%- include('includes/footer') %>
