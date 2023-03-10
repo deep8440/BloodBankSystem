@@ -11,7 +11,7 @@ const fileUpload = require('express-fileupload'); // for file upload
 const session = require('express-session'); // session
 
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/bloodbanksystem');
+mongoose.connect('mongodb://127.0.0.1:27017/bloodbanksystem');
 
 const BloodBank = mongoose.model('BloodBank', {
     name: String,
@@ -29,7 +29,16 @@ const BloodBank = mongoose.model('BloodBank', {
 
 const Appointment = mongoose.model('Appointment', {
     userid: String,
+    username: String,
+    useremail: String,
     bloodbankid : String,
+    bloodbankname: String,
+    bloodbankaddress1 : String,
+    bloodbankcity : String,
+    bloodbankprovince : String,
+    bloodbankpostalCode : String,
+    bloodbankemail : String,
+    bloodbankpnone: String,
     bookingdate : String,
     status: String
 });
@@ -40,6 +49,7 @@ const User = mongoose.model('User', {
     gender:String,
     email : String,
     phoneNumber : String,
+    password: String,
     
 });
 
@@ -130,9 +140,10 @@ myApp.post('/loginsubmituser',[
         if(adminuser){ // would be true if user is found in admin user
             // save in session
             req.session.userid = adminuser._id;
-            req.session.username_user = adminuser.email;
+            req.session.useremail_user = adminuser.email;
+            req.session.username_user = adminuser.name;
             req.session.loggedId_user = true;
-            res.redirect('/appointment');
+            res.render('appointment');
         }
         else{
             var pageData = {
@@ -318,23 +329,35 @@ myApp.post('/userSignup',[
     var confirmpassword = req.body.confirmpassword;
 
     //find in database if it exits
-    User.findOne({email: email}).exec(function(err, user){
+    User.findOne({email: email}).exec(function(err, user)
+    {
     
-        if(user){ 
+        if(user)
+        { 
             var pageData = {
                 error : 'User with same email already exists.'
             }
         }
+        /*else if(password != confirmpassword)
+        {
+            var pageData = {
+                error : 'Password and confirm password not matching.'
+            }
+        }*/
         else{
             var pageData = {
                 name : name,
+                dateOfBirth :'',
+                gender:'',
                 email : email,
-                password : password,
-                confirmpassword : confirmpassword
+                phoneNumber :'',
+                password : password
+                
             }
-        
+            
             var user = new User(pageData); 
             user.save();
+            
 
             res.render('loginUser');
         }
@@ -382,24 +405,44 @@ myApp.get('/select/:id',function(req, res){
     });
 });
 
-myApp.post('/bookappointment',[
-],function(req, res){
+myApp.post('/select/bookappointment',[],function(req, res){
 
+    console.log(123);
     // if(req.session.loggedId_user){
 
     //fetch all the form fields
     var id = req.body.bloodbankid;
     var bookingdate = req.body.date;
     var userid = req.session.userid;
+    var bloodbankName= req.body.bloodbankname;
+    var bloodbankaddress1= req.body.bloodbankaddress1;
+    var bloodbankcity= req.body.bloodbankcity;
+    var bloodbankprovince= req.body.bloodbankprovince;
+    var bloodbankpostalCode= req.body.bloodbankpostalcode;
+    var bloodbankemail= req.body.bloodbankemail;
+    var bloodbankpnone= req.body.bloodbankphonenumber;
+    var username = req.session.username_user;
+    var useremail = req.session.useremail_user;
 
     //find in database if it exits
             var pageData = {
                 userid: userid,
+                username: username,
+                useremail: useremail,
                 bloodbankid : id,
+                bloodbankname: bloodbankName,
+                bloodbankaddress1 : bloodbankaddress1,
+                bloodbankcity : bloodbankcity,
+                bloodbankprovince : bloodbankprovince,
+                bloodbankpostalCode : bloodbankpostalCode,
+                bloodbankemail : bloodbankemail,
+                bloodbankpnone: bloodbankpnone,
                 bookingdate : bookingdate,
                 status: "Confirmed"
             }
         
+            console.log(pageData);
+
             var user = new Appointment(pageData); 
             user.save();
 
@@ -414,9 +457,9 @@ myApp.post('/bookappointment',[
 
 
 // start the server and listen at a port
-myApp.listen(8080);
+myApp.listen(8081);
 
 //tell everything was ok
-console.log('Browse website on localhost at port 8080....');
+console.log('Browse website on localhost at port 8081....');
 
 

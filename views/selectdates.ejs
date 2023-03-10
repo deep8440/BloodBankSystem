@@ -5,7 +5,15 @@
     <div class="login-container">
         <form action="bookappointment" method="POST" enctype="multipart/form-data">
            <div>
-            <input type="hidden" id="bloodbankid" value="bloodbankData.id" name="bloodbankid">
+            <input type="hidden" id="bloodbankid" value="<%= bloodbankData._id %>" name="bloodbankid">
+            <input type="hidden" id="bloodbankname" value="<%= bloodbankData.name %>" name="bloodbankname">
+            <input type="hidden" id="bloodbankaddress1" value="<%= bloodbankData.address1 %>" name="bloodbankaddress1">
+            <input type="hidden" id="bloodbankcity" value="<%= bloodbankData.city %>" name="bloodbankcity">
+            <input type="hidden" id="bloodbankprovince" value="<%= bloodbankData.province %>" name="bloodbankprovince">
+            <input type="hidden" id="bloodbankpostalcode" value="<%= bloodbankData.postalCode %>" name="bloodbankpostalcode">
+            <input type="hidden" id="bloodbankphonenumber" value="<%= bloodbankData.phoneNumber %>" name="bloodbankphonenumber">
+            <input type="hidden" id="bloodbankemail" value="<%= bloodbankData.email %>" name="bloodbankemail">
+            
             <div class="row">
                 <%= bloodbankData.name %> <br>
                 <%= bloodbankData.address1 %><%= bloodbankData.address2 %>
