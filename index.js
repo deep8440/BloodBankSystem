@@ -104,11 +104,12 @@ myApp.post('/loginsubmit',[
     var password = req.body.password;
 
     //find in database if it exits
-    BloodBank.findOne({email: email, password: password}).exec(function(err, adminuser){
+    BloodBank.findOne({email: email, password: password}).exec(function(err, bloodBank){
     
-        if(adminuser){ // would be true if user is found in admin user
+        if(bloodBank){ // would be true if user is found in admin user
             // save in session
-            req.session.username = adminuser.email;
+            req.session.bloodbankemail = bloodBank.email;
+            req.session.bloodbankid = bloodBank.id;
             req.session.loggedId = true;
             res.redirect('/bloodbankhome');
         }
@@ -388,7 +389,26 @@ myApp.post('/postalcodesearch',[],function(req, res){
        
     });
 });
+myApp.get('/userAppointments',function(req, res){
+    //fetch from session
+    var userid = req.session.userid;
+    //find in database if it exits
+    Appointment.find({userid: userid}).exec(function(err, appointments){
+        console.log(appointments);
+        if(appointments){ // would be true if bloodbank is found 
+            res.render('userAppointments', {appointments: appointments});
+        }
+        else{
+            var pageData = {
+                error : 'No appointment booked.'
+            }
+            res.render('appointment', pageData);
+        }
+       
+    });
 
+    res.render('userAppointment'); 
+});
 myApp.get('/select/:id',function(req, res){
     
     var id = req.params.id;
