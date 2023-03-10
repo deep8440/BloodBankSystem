@@ -1,29 +1,32 @@
-<%- include('includes/header') %>
-<%- include('includes/nav-dashboard') %>
+<%- include('includes/header') %> <%- include('includes/nav-dashboard') %>
 <div class="content-wrap">
-	<main>
-      <table class="customers">
-        <tr>
-            <th>Name</th>
-            <th>Address</th>
-            <th></th>
-        </tr>
-        <%
-        for(bloodbank of bloodbanks)
-        {
-        %>
-            <tr>
-                <td><%= bloodbank.name %></td>
-                <td><%= bloodbank.address1 %> <%= bloodbank.city %>
-                    <%= bloodbank.province %> <%= bloodbank.postalCode %> 
-                </td>
-                <td><a href="/select/<%= bloodbank._id %>">Select</a></td>
-            </tr>
-        <%
-        }       
-        %>
-      </table>
-	</main>
+  <main>
+    <% for(bloodbank of bloodbanks) { %>
+    <div class="DivContainer">
+      <div class="cardAppointment">
+        <div class="container">
+          <div class="nameOfBloodBank"><%= bloodbank.name %></div>
+          <div class="address">
+            <%= bloodbank.address1 %> 
+            <%- '<br>'  %>
+            <%= bloodbank.city
+            %>, <%= bloodbank.province %>, <%= bloodbank.postalCode.toUpperCase() %>
+            <%- '<br>'  %>
+
+            <button class="button"> Directions </button>
+
+            <button class="button"> Select Date for booking </button>
+
+
+            <!-- http://maps.google.com/maps?daddr=94%20Bridgeport%20Rd%20E%2C%20Waterloo%2C%20ON%2C%20N2J%202J9%2C%20Canada -->
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <% } %>
+  </main>
 </div>
 <%- include('includes/footer') %>
-            
+
+

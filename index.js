@@ -132,7 +132,7 @@ myApp.post('/loginsubmituser',[
             req.session.userid = adminuser._id;
             req.session.username_user = adminuser.email;
             req.session.loggedId_user = true;
-            res.redirect('/userhome');
+            res.redirect('/appointment');
         }
         else{
             var pageData = {
