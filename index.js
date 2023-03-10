@@ -267,7 +267,7 @@ myApp.post('/bloodbankSignup',[
 
 myApp.get('/profile',function(req, res){
     if(req.session.loggedId){
-        BloodBank.findOne({email: req.session.username}).exec(function(err, bloodbank){ 
+        BloodBank.findOne({email: req.session.bloodbankemail}).exec(function(err, bloodbank){ 
             var userData = {
                 name: bloodbank.name,
                 address1 : bloodbank.address1,
@@ -393,26 +393,9 @@ myApp.post('/postalcodesearch',[],function(req, res){
        
     });
 });
-myApp.get('/userAppointments',function(req, res){
-    //fetch from session
-    var userid = req.session.userid;
-    //find in database if it exits
-    Appointment.find({userid: userid}).exec(function(err, appointments){
-        console.log(appointments);
-        if(appointments){ // would be true if bloodbank is found 
-            res.render('userAppointments', {appointments: appointments});
-        }
-        else{
-            var pageData = {
-                error : 'No appointment booked.'
-            }
-            res.render('appointment', pageData);
-        }
-       
-    });
 
-    res.render('userAppointment'); 
-});
+
+
 myApp.get('/select/:id',function(req, res){
     
     var id = req.params.id;
@@ -493,6 +476,74 @@ myApp.post('/select/bookappointment',[],function(req, res){
         //     res.render('loginUser');
         // }
     });
+
+    /*myApp.get('/userAppointments',function(req, res){
+        //fetch from session
+        console.log(123);
+        /*var userid = req.session.userid;
+        //find in database if it exits
+        Appointment.find({userid: userid}).exec(function(err, appointments){
+            console.log(appointments);
+            if(appointments){ // would be true if bloodbank is found 
+                res.render('userAppointments', {appointments: appointments});
+            }
+            else{
+                var pageData = {
+                    error : 'No appointment booked.'
+                }
+                res.render('appointment', pageData);
+            }
+           
+        });
+    
+        res.render('userAppointment'); 
+    });
+*/
+    
+myApp.get('/bloodBankAppointments',function(req, res){
+    //fetch from session
+    var userid = req.session.bloodbankid;
+    console.log(userid);
+    //find in database if it exits
+    Appointment.find({bloodbankid: userid}).exec(function(err, appointments){
+        console.log(appointments);
+        if(appointments){ // would be true if bloodbank is found 
+            res.render('bloodBankAppointments', {appointments: appointments});
+        }
+        else{
+            var pageData = {
+                error : 'No appointment booked.'
+            }
+            res.render('appointment', pageData);
+        }
+        
+        
+    });
+
+});
+
+myApp.get('/userAppointments',function(req, res){
+    //fetch from session
+    //fetch from session
+    console.log(123);
+    var userid = req.session.userid;
+    //find in database if it exits
+    Appointment.find({userid: userid}).exec(function(err, appointments){
+        console.log(appointments);
+        if(appointments){ // would be true if bloodbank is found 
+            res.render('userAppointment', {appointments: appointments});
+        }
+        else{
+            var pageData = {
+                error : 'No appointment booked.'
+            }
+            res.render('appointment', pageData);
+        }
+       
+    });
+
+
+});
 
 
 
