@@ -80,6 +80,16 @@
             </div>
             <div class="row">
                 <div class="col-12 text-center">
+                    <div>
+                        <% 
+                            if(typeof(error) != 'undefined'){
+                                %>
+                               <div class="error"> <%= error%> </p>
+                                <%
+                        } %>
+                            
+                    </div>
+                    <br/>
                     <input type="submit" value="Sign Up" class="login">
                    
                 </div>

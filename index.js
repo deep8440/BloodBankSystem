@@ -1,6 +1,8 @@
 // import dependencies you will use
 const express = require('express');
 const path = require('path');
+const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey("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");
 //const bodyParser = require('body-parser'); // not required for Express 4.16 onwards as bodyParser is now included with Express
 // set up expess validator
 const {check, validationResult} = require('express-validator'); //destructuring an object
@@ -234,6 +236,7 @@ myApp.post('/bloodbankSignup',[
             var pageData = {
                 error : 'Blood Bank with same email already exists.'
             }
+            res.render('signupbloodbank', pageData);
         }
         else{
             var pageData = {
@@ -332,20 +335,23 @@ myApp.post('/userSignup',[
     //find in database if it exits
     User.findOne({email: email}).exec(function(err, user)
     {
-    
+        console.log(user);
         if(user)
         { 
             var pageData = {
                 error : 'User with same email already exists.'
             }
+            res.render('signupUser', pageData);
         }
-        /*else if(password != confirmpassword)
+        else if(password != confirmpassword)
         {
             var pageData = {
                 error : 'Password and confirm password not matching.'
             }
-        }*/
+            res.render('signupUser', pageData);
+        }
         else{
+            console.log("user signup start");
             var pageData = {
                 name : name,
                 dateOfBirth :'',
@@ -355,11 +361,9 @@ myApp.post('/userSignup',[
                 password : password
                 
             }
-            
+            console.log(pageData);
             var user = new User(pageData); 
             user.save();
-            
-
             res.render('loginUser');
         }
        
@@ -465,6 +469,22 @@ myApp.post('/select/bookappointment',[],function(req, res){
 
             var user = new Appointment(pageData); 
             user.save();
+
+            let message = 'Hello '+ username + ','
+                          +'Your appointment to donate blood is booked on ' + bookingdate
+                          +'Please arrive at least 15 min early at'
+                          + bloodbankName +
+                          + bloodbankaddress1 +
+                          + bloodbankcity +', ' + bloodbankprovince
+                          + bloodbankpnone;
+
+            const msg = {
+                to: useremail,
+                from: 'rushaytrivedi@gmail.com',
+                subject: 'Appointment Booked on - ' + bookingdate,
+                html: '<h2>Appointment Booked</h2><br/><p1>'+ message +'</p1>',
+              };
+              sgMail.send(msg);
 
             res.render('userhome');
         
