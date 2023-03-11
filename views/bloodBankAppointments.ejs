@@ -17,6 +17,8 @@
           <th>User Email</th>
           
           <th>Appointment date and time</th>
+          <th>Status</th>
+          <th>Completed</th>
           
       </tr>
       <%
@@ -29,6 +31,8 @@
               <td><%= bloodbank.useremail %></td>
               
               <td><%= bloodbank.bookingdate %></td>
+              <td><%= bloodbank.status %></td>
+              <td><a href="/bloodDonationConfirmation">Yes</a></td>
               
           </tr>
       <%
