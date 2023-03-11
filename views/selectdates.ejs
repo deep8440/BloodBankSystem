@@ -1,7 +1,7 @@
 <%- include('includes/header') %>
 
 <div class="content-wrap">
-    <h1 class="text-center">Select Dates</h1>
+    <h1 class="text-center">Blood donation: Select an available time</h1>
     <div class="login-container">
         <form action="bookappointment" method="POST" enctype="multipart/form-data">
            <div>
@@ -14,15 +14,16 @@
             <input type="hidden" id="bloodbankphonenumber" value="<%= bloodbankData.phoneNumber %>" name="bloodbankphonenumber">
             <input type="hidden" id="bloodbankemail" value="<%= bloodbankData.email %>" name="bloodbankemail">
             
-            <div class="row">
-                <%= bloodbankData.name %> <br>
-                <%= bloodbankData.address1 %><%= bloodbankData.address2 %>
-                <%= bloodbankData.city %><%= bloodbankData.province %>
-                <%= bloodbankData.postalCode %>
+            <div class="nameOfBloodBank"><%= bloodbank.name %></div>
+            <div class="address">
+              <%= bloodbank.address1 %> 
+              <%- '<br>'  %>
+              <%= bloodbank.city
+              %>, <%= bloodbank.province %>, <%= bloodbank.postalCode.toUpperCase() %>
+              <%- '<br>'  %>
             </div>
                 <div class="row">
                     <div class="col-4">
-                        <label>Select dates </label>
                     </div>
                     <div class="col-8">
                         <input id="date" class="txtinput" placeholder="Select date" type="datetime-local" name="date">
