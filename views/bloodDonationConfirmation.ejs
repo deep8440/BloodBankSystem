@@ -1,0 +1,61 @@
+<%- include('includes/header') %>
+<nav>
+	<ul class="nav d-flex">
+	  <li><a href="/bloodbankhome">Home</a></li>
+	  <li><a href="/profile">Profile</a></li>
+	  <li><a href="/bloodBankAppointments">Appointments</a></li>
+	  <li><a href="/logout">Logout</a></li>
+	</ul>
+  </nav> 
+<div class="content-wrap">
+    <h1 class="text-center">Sign Up</h1>
+    <div class="login-container">
+    <form action="bloodDonationConfirmation" method="POST" enctype="multipart/form-data">
+       <div>
+            <div class="row">
+                <div class="col-4">
+                    <label>User Name </label>
+                </div>
+                <div class="col-8">
+                    <input id="uname" class="txtinput" placeholder="name" type="text" name="uname"><br/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4">
+                    <label>Email</label>
+                </div>
+                <div class="col-8">
+                    <input id="email" class="txtinput" placeholder="email" type="text" name="email"><br/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4">
+                    <label>Blood Bank Name </label>
+                </div>
+                <div class="col-8">
+                    <input id="name" class="txtinput" placeholder="name" type="text" name="name"><br/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4">
+                    <label>Quantity </label>
+                </div>
+                <div class="col-8">
+                    <select id="btype" name="btype">
+                        <option value="A+">A+</option><option value="A-">A-</option>
+                        <option value="B+">B+</option><option value="B-">B-</option>
+                        <option value="O+">O+</option><option value="O-">O-</option>
+                        <option value="AB+">AB+</option><option value="AB-">AB-</option>
+                    </select>
+                </div>
+            </div>
+            
+            <input type="submit" value="Submit" class="login">    
+            
+        </div>
+        
+        
+    </form>
+</div>
+<%- include('includes/footer') %>
+            

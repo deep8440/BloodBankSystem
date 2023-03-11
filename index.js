@@ -14,37 +14,49 @@ const fileUpload = require("express-fileupload"); // for file upload
 //steps for adding login logout
 const session = require("express-session"); // session
 
-const mongoose = require("mongoose");
-mongoose.connect("mongodb://127.0.0.1:27017/bloodbanksystem");
 
-const BloodBank = mongoose.model("BloodBank", {
-  name: String,
-  address1: String,
-  address2: String,
-  city: String,
-  province: String,
-  postalCode: String,
-  email: String,
-  phoneNumber: String,
-  openingHour: String,
-  closingHour: String,
-  password: String,
+const mongoose = require('mongoose');
+mongoose.connect('mongodb://127.0.0.1:27017/bloodbanksystem');
+const BloodBankTypes = mongoose.model('BloodBankTypes', {
+    AB_Positive: String,
+    AB_Negative : String,
+    A_Positive: String,
+    A_Negative : String,
+    B_Positive: String,
+    B_Negative : String,
+    O_Positive: String,
+    O_Negative : String,
+    BloodBankName : String
+    
+});
+const BloodBank = mongoose.model('BloodBank', {
+    name: String,
+    address1 : String,
+    address2 : String,
+    city : String,
+    province : String,
+    postalCode : String,
+    email : String,
+    phoneNumber : String,
+    openingHour : String,
+    closingHour : String,
+    password : String
 });
 
-const Appointment = mongoose.model("Appointment", {
-  userid: String,
-  username: String,
-  useremail: String,
-  bloodbankid: String,
-  bloodbankname: String,
-  bloodbankaddress1: String,
-  bloodbankcity: String,
-  bloodbankprovince: String,
-  bloodbankpostalCode: String,
-  bloodbankemail: String,
-  bloodbankpnone: String,
-  bookingdate: String,
-  status: String,
+const Appointment = mongoose.model('Appointment', {
+    userid: String,
+    username: String,
+    useremail: String,
+    bloodbankid : String,
+    bloodbankname: String,
+    bloodbankaddress1 : String,
+    bloodbankcity : String,
+    bloodbankprovince : String,
+    bloodbankpostalCode : String,
+    bloodbankemail : String,
+    bloodbankpnone: String,
+    bookingdate : String,
+    status: String,
 });
 
 const User = mongoose.model("User", {
@@ -463,32 +475,120 @@ myApp.post("/select/bookappointment", [], function (req, res) {
     console.log("email: " + useremail);
 
 
-  const msg = {
-    to: useremail,
-    from: "rushaytrivedi@gmail.com",
-    subject: "Appointment Booked on - " + bookingdate,
-    html: "<h2>Appointment Booked</h2><br/><p1>"+message+"</p1>",
-  };
-  sgMail.send(msg);
+    const msg = {
+        to: useremail,
+        from: "rushaytrivedi@gmail.com",
+        subject: "Appointment Booked on - " + bookingdate,
+        html: "<h2>Appointment Booked</h2><br/><p1>"+message+"</p1>",
+      };
+      sgMail.send(msg);
 
-  res.redirect("/userAppointments");
+      res.redirect("/userAppointments");
+    });
+        
+
+    
+myApp.get('/bloodBankAppointments',function(req, res){
+    //fetch from session
+    var userid = req.session.bloodbankid;
+    console.log(userid);
+    //find in database if it exits
+    Appointment.find({bloodbankid: userid,status:"Confirmed"}).exec(function(err, appointments){
+        console.log(appointments);
+        if(appointments){ // would be true if bloodbank is found 
+            res.render('bloodBankAppointments', {appointments: appointments});
+        }
+        else{
+            var pageData = {
+                error : 'No appointment booked.'
+            }
+            res.render('appointment', pageData);
+        }
+        
+        
+    });
 });
 
-myApp.get("/bloodBankAppointments", function (req, res) {
-  //fetch from session
-  var userid = req.session.bloodbankid;
-  //find in database if it exits
-  Appointment.find({ bloodbankid: userid }).exec(function (err, appointments) {
-    if (appointments) {
-      // would be true if bloodbank is found
-      res.render("bloodBankAppointments", { appointments: appointments });
-    } else {
-      var pageData = {
-        error: "No appointment booked.",
-      };
-      res.render("appointment", pageData);
-    }
-  });
+myApp.get('/bloodDonationConfirmation',function(req, res){
+    res.render('bloodDonationConfirmation');
+});
+
+myApp.post('/bloodDonationConfirmation',function(req, res){
+    console.log(123);
+    var bloodbankName= req.body.name;
+    var userName= req.body.uname;
+    var email=req.body.email;
+    Appointment.findOne({username:userName}).exec(function(err, appointment){
+        if(appointment)
+        {
+            appointment.status="Completed";
+            appointment.save();
+            
+                
+        }    
+        
+        
+        
+    
+    });
+    BloodBankTypes.findOne({BloodBankName:bloodbankName}).exec(function(err, BloodBank){
+        
+        if(BloodBank)
+        {
+            
+           if(req.body.btype=="A+")
+           {
+            
+                BloodBank.A_Positive=parseInt(BloodBank.A_Positive)+1;
+                BloodBank.save();
+           }
+           if(req.body.btype=="A-")
+           {
+            
+                BloodBank.A_Negative=BloodBank.A_Negative+1;
+                BloodBank.save();
+           }
+           if(req.body.btype=="B+")
+           {
+            
+                BloodBank.B_Positive=BloodBank.B_Positive+1;
+                BloodBank.save();
+           }
+           if(req.body.btype=="B-")
+           {
+            
+                BloodBank.B_Negative=BloodBank.B_Negative+1;
+                BloodBank.save();
+           }
+           if(req.body.btype=="O+")
+           {
+            
+                BloodBank.O_Positive=BloodBank.O_Positive+1;
+                BloodBank.save();
+           }
+           if(req.body.btype=="O-")
+           {
+            
+                BloodBank.O_Negative=BloodBank.O_Negative+1;
+                BloodBank.save();
+           }
+           if(req.body.btype=="AB+")
+           {
+            
+                BloodBank.AB_Positive=BloodBank.AB_Positive+1;
+                BloodBank.save();
+           }
+           if(req.body.btype=="AB-")
+           {
+            
+                BloodBank.AB_Negative=BloodBank.AB_Negative+1;
+                BloodBank.save();
+           }
+           
+                
+        }    
+    });
+    res.render('userhome'); 
 });
 
 myApp.get("/userAppointments", function (req, res) {
