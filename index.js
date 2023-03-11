@@ -185,15 +185,12 @@ myApp.get("/bloodbankhome", function (req, res) {
     
   if (req.session.loggedId) {
     console.log(bloodbankemail);
-    BloodBankTypes.findOne({Bloodbankemail:bloodbankemail}).exec(function(err, BloodBank){
-        console.log(BloodBank);
-        if(BloodBank)
+    BloodBankTypes.findOne({Bloodbankemail:bloodbankemail}).exec(function(err, bloodbank){
+       
+        if(bloodbank)
         {
-            
-            res.render('bloodbankhome',BloodBank);
-        }
-        else{
-            res.render('bloodbankhome');
+          
+            res.render('bloodbankhome',{bloodbanktype: bloodbank});
         }
 
     });
@@ -430,7 +427,7 @@ myApp.get("/select/:id", function (req, res) {
   });
 });
 
-myApp.post("bookappointment", [], function (req, res) {
+myApp.post("/select/bookappointment", [], function (req, res) {
   console.log(123);
   // if(req.session.loggedId_user){
 
@@ -518,8 +515,6 @@ myApp.get('/bloodBankAppointments',function(req, res){
             }
             res.render('appointment', pageData);
         }
-        
-        
     });
 });
 
@@ -530,7 +525,6 @@ myApp.get('/bloodDonationConfirmation/:id',function(req, res){
             // would be true if bloodbank is found
             console.log(appointment);
             res.render("bloodDonationConfirmation", { appointmentData: appointment });
-            
           }
     });
     
@@ -549,10 +543,6 @@ myApp.post('/bloodConfirmation',function(req, res){
             
                 
         }    
-        
-        
-        
-    
     });
     BloodBankTypes.findOne({BloodBankName:bloodbankName}).exec(function(err, BloodBank){
         
@@ -611,15 +601,16 @@ myApp.post('/bloodConfirmation',function(req, res){
                 
         }    
     });
+    
     BloodBankTypes.findOne({BloodBankName:bloodbankName}).exec(function(err, BloodBank){
         
         if(BloodBank)
         {
-            res.render('bloodbankhome',BloodBank);
+            res.render('bloodbankhome',{ bloodbanktype: BloodBank });
         }
 
     });
-     res.render('bloodbankhome');
+     res.redirect('/bloodbankhome');
 });
 
 myApp.get("/userAppointments", function (req, res) {
