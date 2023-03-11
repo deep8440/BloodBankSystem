@@ -181,8 +181,22 @@ myApp.post(
 
 // render view orders page
 myApp.get("/bloodbankhome", function (req, res) {
+    var bloodbankemail=req.session.bloodbankemail;
+    
   if (req.session.loggedId) {
-    res.render("bloodbankhome");
+    console.log(bloodbankemail);
+    BloodBankTypes.findOne({Bloodbankemail:bloodbankemail}).exec(function(err, BloodBank){
+        console.log(BloodBank);
+        if(BloodBank)
+        {
+            
+            res.render('bloodbankhome',BloodBank);
+        }
+        else{
+            res.render('bloodbankhome');
+        }
+
+    });
   } else {
     res.redirect("/login");
   }
@@ -416,7 +430,7 @@ myApp.get("/select/:id", function (req, res) {
   });
 });
 
-myApp.post("/select/bookappointment", [], function (req, res) {
+myApp.post("bookappointment", [], function (req, res) {
   console.log(123);
   // if(req.session.loggedId_user){
 
@@ -509,15 +523,24 @@ myApp.get('/bloodBankAppointments',function(req, res){
     });
 });
 
-myApp.get('/bloodDonationConfirmation',function(req, res){
-    res.render('bloodDonationConfirmation');
+myApp.get('/bloodDonationConfirmation/:id',function(req, res){
+    var id = req.params.id;
+    Appointment.findOne({ _id: id }).exec(function(err, appointment){
+        if (appointment) {
+            // would be true if bloodbank is found
+            console.log(appointment);
+            res.render("bloodDonationConfirmation", { appointmentData: appointment });
+            
+          }
+    });
+    
 });
 
-myApp.post('/bloodDonationConfirmation',function(req, res){
+myApp.post('/bloodConfirmation',function(req, res){
     console.log(123);
-    var bloodbankName= req.body.name;
-    var userName= req.body.uname;
-    var email=req.body.email;
+    var bloodbankName= req.body.bloodbankname;
+    var userName= req.body.username;
+    
     Appointment.findOne({username:userName}).exec(function(err, appointment){
         if(appointment)
         {
@@ -588,7 +611,15 @@ myApp.post('/bloodDonationConfirmation',function(req, res){
                 
         }    
     });
-    res.render('userhome'); 
+    BloodBankTypes.findOne({BloodBankName:bloodbankName}).exec(function(err, BloodBank){
+        
+        if(BloodBank)
+        {
+            res.render('bloodbankhome',BloodBank);
+        }
+
+    });
+     res.render('bloodbankhome');
 });
 
 myApp.get("/userAppointments", function (req, res) {

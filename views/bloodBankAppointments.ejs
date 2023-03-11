@@ -12,7 +12,7 @@
           
           <th>Appointment date and time</th>
           <th>Status</th>
-          <th>Completed</th>
+          <th>Appointment status</th>
           
       </tr>
       <%
@@ -26,7 +26,9 @@
               
               <td><%= bloodbank.bookingdate %></td>
               <td><%= bloodbank.status %></td>
-              <td><a href="/bloodDonationConfirmation">Yes</a></td>
+              
+
+              <td><a href="/bloodDonationConfirmation/<%= bloodbank._id %>">Completed</a></td>
               
           </tr>
       <%
