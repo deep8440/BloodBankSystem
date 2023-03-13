@@ -186,13 +186,11 @@ myApp.get("/bloodbankhome", function (req, res) {
   if (req.session.loggedId) {
     console.log(bloodbankemail);
     BloodBankTypes.findOne({Bloodbankemail:bloodbankemail}).exec(function(err, bloodbank){
-       
         if(bloodbank)
         {
           
             res.render('bloodbankhome',{bloodbanktype: bloodbank});
         }
-
     });
   } else {
     res.redirect("/login");
@@ -531,17 +529,14 @@ myApp.get('/bloodDonationConfirmation/:id',function(req, res){
 });
 
 myApp.post('/bloodConfirmation',function(req, res){
-    console.log(123);
     var bloodbankName= req.body.bloodbankname;
-    var userName= req.body.username;
+    var appointmentid= req.body.appointmentid;
     
-    Appointment.findOne({username:userName}).exec(function(err, appointment){
+    Appointment.findOne({_id:appointmentid}).exec(function(err, appointment){
         if(appointment)
         {
             appointment.status="Completed";
-            appointment.save();
-            
-                
+            appointment.save();      
         }    
     });
     BloodBankTypes.findOne({BloodBankName:bloodbankName}).exec(function(err, BloodBank){
